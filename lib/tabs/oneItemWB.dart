@@ -14,9 +14,11 @@ class _OneItemState extends State<OneItem> {
 
   String collection = '1580860';
   List<ImageData> images = [];
+  int pageNo = 1;
+  ScrollController _scrollController = new ScrollController();
 
   void storeImages() async {
-    List<ImageData> img = await getPhotos(collection,'One item - white background');
+    List<ImageData> img = await getPhotos(collection,'One item - white background', pageNo);
     setState(() {
       images = img;
     });
@@ -26,6 +28,23 @@ class _OneItemState extends State<OneItem> {
   void initState() {
     super.initState();
     storeImages();
+    _scrollController.addListener(() async {
+      if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        pageNo++;
+        List<ImageData> newImgs = await getPhotos(collection,'One item - white background', pageNo);
+        List<ImageData> temp = images;
+        temp.addAll(newImgs);
+        setState(() {
+          images = temp;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,6 +56,7 @@ class _OneItemState extends State<OneItem> {
         crossAxisSpacing: 8,
         padding: const EdgeInsets.all(8),
         childAspectRatio: 0.6,
+        controller: _scrollController,
         physics: ScrollPhysics(),
         children:images.map<Widget>( (photo) {
           return GestureDetector(
@@ -44,7 +64,8 @@ class _OneItemState extends State<OneItem> {
               photo: photo,
             ),
           );
-        }).toList()),
+        }).toList(),
+      ),
     );
   }
 }

@@ -13,9 +13,11 @@ class _CatsState extends State<Cats> {
 
   String collection = '139386';
   List<ImageData> images = [];
+  int pageNo = 1;
+  ScrollController _scrollController = new ScrollController();
 
   void storeImages() async {
-    List<ImageData> img = await getPhotos(collection,'Cat');
+    List<ImageData> img = await getPhotos(collection,'Cat', pageNo);
     setState(() {
       images = img;
     });
@@ -25,6 +27,23 @@ class _CatsState extends State<Cats> {
   void initState() {
     super.initState();
     storeImages();
+    _scrollController.addListener(() async {
+      if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        pageNo++;
+        List<ImageData> newImgs = await getPhotos(collection,'Cat', pageNo);
+        List<ImageData> temp = images;
+        temp.addAll(newImgs);
+        setState(() {
+          images = temp;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,6 +56,7 @@ class _CatsState extends State<Cats> {
           padding: const EdgeInsets.all(8),
           childAspectRatio: 0.6,
           physics: ScrollPhysics(),
+          controller: _scrollController,
           children:images.map<Widget>( (photo) {
             return GestureDetector(
               child: ImageTile(
