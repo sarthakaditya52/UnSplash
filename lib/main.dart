@@ -33,15 +33,39 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UnSplash'),
+        title: Text('UnSplash',
+          style: TextStyle(
+            color: Colors.black54,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.greenAccent,
-        bottom: TabBar(
-          controller: tabController,
-          tabs: <Widget>[
-            Tab(text: 'Cats',),
-            Tab(text: 'One item - white background',),
-          ],
+        backgroundColor: Colors.grey[200],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(40.0),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 25, 3),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.grey[400],
+              ),
+              child: TabBar(
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.white,
+                indicator: BoxDecoration(
+                  border: Border.all(color: Colors.grey[400], width: 4),
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white70,
+                ),
+                controller: tabController,
+                tabs: <Widget>[
+                  Tab(text: 'Cats'),
+                  Tab(text: 'One Item'),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
       body: TabBarView(
