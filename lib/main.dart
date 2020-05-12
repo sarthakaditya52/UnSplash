@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:unsplash/tabs/pets.dart' as pets;
-import 'package:unsplash/tabs/nature.dart' as nature;
+import 'package:unsplash/tabs/cats.dart' as cats;
+import 'package:unsplash/tabs/oneItemWB.dart' as oneItem;
 
 void main() {
   runApp(MaterialApp(
@@ -39,16 +39,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         bottom: TabBar(
           controller: tabController,
           tabs: <Widget>[
-            Tab(text: 'Pets',),
-            Tab(text: 'Nature',),
+            Tab(text: 'Cats',),
+            Tab(text: 'One item - white background',),
           ],
         ),
       ),
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
-          pets.Pets(),
-          nature.Nature(),
+          cats.Cats(),
+          oneItem.OneItem(),
         ],
       ),
     );
